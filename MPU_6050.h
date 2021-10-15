@@ -57,13 +57,17 @@ class MPU_6050
      * @return returns the acceleration in m/s²
      */
     float AccelCalculator(int16_t raw_accel);
-    
+
     /*!
     * @brief Transform the bytes coming from register in readable information
     * @param raw_gyro Raw data readed by the sensor
     * @return returns the rotation in degrees °
     */
     int16_t GyroCalculator(int16_t raw_gyro);
+
+    void CheckStatus();
+    void GyroCheck();
+    void AccellCheck();
   
   public:
 
