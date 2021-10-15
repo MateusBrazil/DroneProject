@@ -57,7 +57,7 @@ class MPU_6050
      * @return returns the acceleration in m/s²
      */
     float AccelCalculator(int16_t raw_accel);
-
+    
     /*!
     * @brief Transform the bytes coming from register in readable information
     * @param raw_gyro Raw data readed by the sensor
@@ -70,7 +70,7 @@ class MPU_6050
      /*!
      * @brief Starts the I2C communication with the MPU6050
      */
-    void initiate();    
+    void Initiate();    
 
     /*!
      * @brief Gets the X value of Gyroscope
