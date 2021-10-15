@@ -68,6 +68,10 @@ class MPU_6050
     void CheckStatus();
     void GyroCheck();
     void AccellCheck();
+<<<<<<< HEAD
+=======
+   
+>>>>>>> 14a7cfddfa190f05a13bfa669e2fccd8be1374cf
   
   public:
 
