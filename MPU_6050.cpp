@@ -1,6 +1,6 @@
 #include "MPU_6050.h"
 
-//Só para testar mesmo...
+//CETADOIDO
 
 MPU_6050::MPU_6050() {}
 
