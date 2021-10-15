@@ -120,11 +120,7 @@ class MPU_6050
     float AccelZ();
 
     /*!
-     * @brief Configure the Gyroscope range. 
-     * 0 = 250 rads/s;
-     * 1 = 500 rads/s;
-     * 2 = 1000 rads/s;
-     * 3 = 2000 rads/s;
+     * @brief Configure the Gyroscope range. (0 = 250 rads/s | 1 = 500 rads/s | 2 = 1000 rads/s | 3 = 2000 rads/s)
      * @param gyro_range The Gyroscope sensitivity in a scale 0-3
      */
     void ConfigGyroRange(int gyro_range);
