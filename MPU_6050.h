@@ -57,10 +57,13 @@ class MPU_6050
      * @return returns the acceleration in m/s²     * 
      */
     float AccelCalculator(int16_t raw_accel);
-
-    
+        
     int16_t GyroCalculator(int16_t Gx, int16_t Gy, int16_t Gz);
-
+    
+    void CheckStatus();
+    void GyroCheck();
+    void AccellCheck();
+   
     /*!
      * @brief Converts 2's complement binary into decimal
      * @param twocomplement binary 2's complement value to convert
@@ -75,7 +78,7 @@ class MPU_6050
      /*!
      * @brief Starts the I2C communication with the MPU6050
      */
-    void initiate();    
+    void Initiate();    
 
     /*!
      * @brief Gets the X value of Gyroscope

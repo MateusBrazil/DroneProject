@@ -1,7 +1,5 @@
 #include "MPU_6050.h"
 
-//CETADOIDO
-
 MPU_6050::MPU_6050() {}
 
 int16_t MPU_6050::GetData(uint16_t reg_address, uint8_t num_bytes){
