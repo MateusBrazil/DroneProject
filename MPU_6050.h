@@ -69,9 +69,7 @@ class MPU_6050
      * @param twocomplement binary 2's complement value to convert
      * @return Returns converted value in decimal
      */
-    int TwosComplementToDecimal(int16_t twoscomplement);
-
-  
+    int TwosComplementToDecimal(int16_t twoscomplement);  
   
   public:
 
