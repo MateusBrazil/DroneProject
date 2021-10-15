@@ -8,7 +8,7 @@ MPU_6050 mpu;
 
 void setup() {
   Serial.begin(115200);
-  mpu.begin();
+  mpu.begin(ESP32_BUILTIN_LED);
 }
 
 void loop() {

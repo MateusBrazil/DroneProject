@@ -18,18 +18,85 @@ float MPU_6050::AccelCalculator(int16_t raw_accel){
   float no_accel = raw_accel * rangePerUnit * 9.80665;
 
   return no_accel;
+}
+
+bool MPU_6050::CheckI2CConnection(int8_t i2c_sda, int8_t i2c_scl, int8_t led_pin){
+
+  if(i2c_sda != NULL && i2c_scl !=NULL) Wire.begin(i2c_sda, i2c_scl);
+  else Wire.begin();
+
+  int8_t transmission_code = Wire.endTransmission(); 
+
+  if (led_pin != NULL){
+
+    if(transmission_code != 0){
+
+      for(int i = 0; i <= transmission_code; i++){
+        digitalWrite(led_pin, HIGH);
+        delay(500);
+        digitalWrite(led_pin, LOW);
+        delay(100);
+      }
+    }
+    else return true;
+
+  }
+
+  else{
+    
+    Serial.begin(115200);
+    switch (transmission_code){        
+        case 1:
+          Serial.println("data too long to fit in transmit buffer");
+          break;
+        case 2:
+          Serial.println("received NACK on transmit of address");
+          break;
+        case 3:
+          Serial.println("received NACK on transmit of data");
+          break;
+        case 4:
+          Serial.println("other error");          
+          break;
+        default:        
+          Serial.println("Error out of table. Code -->");Serial.print(transmission_code);
+    }
+
+  }  
 
 }
 
-void MPU_6050::initiate(){
+void MPU_6050::Begin(){  
+
+  while(!CheckI2CConnection(NULL, NULL, NULL));
+  GyroCheck();
+  AccellCheck();
+
+}
+
+void MPU_6050::Begin(int8_t led_pin){
   
-  Wire.begin();
-  Wire.beginTransmission(MPU_SENSOR_I2C_ADDRESS);
-  Wire.write(POWER_MANAGEMENT);
-  Wire.write(POWER_MANAGEMENT_CFG);
-  Wire.endTransmission(true);
+  while(!CheckI2CConnection(NULL, NULL, led_pin));  
+  //GyroCheck();
+  //AccellCheck();
   
 }    
+
+void MPU_6050::Begin(int8_t scl_pin, int8_t sda_pin){
+
+  while(!CheckI2CConnection(sda_pin, scl_pin, NULL));
+  //GyroCheck();
+  //AccellCheck();
+  
+}
+
+void MPU_6050::Begin(int8_t scl_pin, int8_t sda_pin, int8_t led_pin){
+
+  while(!CheckI2CConnection(sda_pin, scl_pin, led_pin));
+  //GyroCheck();
+  //AccellCheck();
+  
+}
 
    
 void MPU_6050::ConfigGyroRange(int gyro_range){

@@ -5,6 +5,9 @@
 #include <stdint.h>
 #include <Wire.h>
 
+
+#define ESP32_BUILTIN_LED 2
+
 // BEGIN of registers
 #define MPU_SENSOR_I2C_ADDRESS 0x68      //Address of MPU6050 in I2C bus.
 #define GYRO_CONFIG 0x1B                 // The configuration register of Gyroscope.
@@ -30,7 +33,7 @@
 // The configuration values are on the datasheet of registers.
 #define POWER_MANAGEMENT_CFG 0x00 
 #define ACCEL_FS_SEL_CFG 0x00           
-#define GYRO_FS_SEL_CFG 0x10
+#define GYRO_FS_SEL_CFG 0x00
 //end of register configuration        
 
 /*!
@@ -40,8 +43,6 @@ class MPU_6050
 {
 
   private:
-
-    MPU_6050();
 
     /*!
      * @brief Get data from registers over I2C from the MPU6050
@@ -65,20 +66,55 @@ class MPU_6050
     */
     int16_t GyroCalculator(int16_t raw_gyro);
 
-    void CheckStatus();
-    void GyroCheck();
-    void AccellCheck();
-<<<<<<< HEAD
-=======
+    /*!
+    * @brief Check if MPU is working well.
+    * @param i2c_sda SDA PIN number
+    * @param i2c_scl SCL PIN number
+    * @param led_pin Error LED PIN number
+    * @return returns true if MPU are working well and an ERROR if dont
+    */
+    bool CheckI2CConnection(int8_t i2c_sda, int8_t i2c_scl, int8_t led_pin);
+
    
->>>>>>> 14a7cfddfa190f05a13bfa669e2fccd8be1374cf
-  
+    /*!
+     *  @brief Realize the autotest of gyroscope     
+     */    
+    void GyroCheck();
+
+    /*!
+     *  @brief Realize the autotest of accelerometer   
+     */    
+    void AccellCheck();
+
   public:
 
-     /*!
-     * @brief Starts the I2C communication with the MPU6050
+    MPU_6050();
+
+    /*!
+     * @brief Starts the I2C communication with the MPU6050 (Default PIN SCL: A5 | SDA: A4 [Arduino] / [ESP32] SCL: 22 SDA: 21)
      */
-    void Initiate();    
+    void Begin();
+
+     /*!
+     * @brief Starts the I2C communication with the MPU6050 (Default PIN SCL: A5 | SDA: A4 [Arduino] / [ESP32] SCL: 22 SDA: 21)
+     * @param led_pin Error LED PIN number
+     */
+    void Begin(int8_t led_pin);
+    
+    /*!
+     * @brief Starts the I2C communication with the MPU6050
+     * @param scl_pin SCL PIN number
+     * @param sda_pin SDA PIN number
+     */
+    void Begin(int8_t scl_pin, int8_t sda_pin);
+
+    /*!
+     * @brief Starts the I2C communication with the MPU6050
+     * @param scl_pin SCL PIN number
+     * @param sda_pin SDA PIN number
+     * @param led_pin Error LED PIN number
+     */
+    void Begin(int8_t scl_pin, int8_t sda_pin, int8_t led_pin);
 
     /*!
      * @brief Gets the X value of Gyroscope
