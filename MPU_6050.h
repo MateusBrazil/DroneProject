@@ -28,10 +28,10 @@
 
 // Register Configuration
 // The configuration values are on the datasheet of registers.
-#define POWER_MANAGEMENT_CFG 0x00          
-#define ACCEL_FS_SEL_CFG 0x00                 
-#define GYRO_FS_SEL_CFG 0x10  
-//end of register configuration                
+#define POWER_MANAGEMENT_CFG 0x00 
+#define ACCEL_FS_SEL_CFG 0x00           
+#define GYRO_FS_SEL_CFG 0x10
+//end of register configuration        
 
 /*!
  * @brief MPU_6050 Main Class
@@ -54,22 +54,20 @@ class MPU_6050
     /*!
      * @brief Transform the bytes coming from register in readable information like m/2²
      * @param raw_accell Raw data readed by the sensor
-     * @return returns the acceleration in m/s²     * 
+     * @return returns the acceleration in m/s²
      */
     float AccelCalculator(int16_t raw_accel);
-        
-    int16_t GyroCalculator(int16_t Gx, int16_t Gy, int16_t Gz);
-    
+
+    /*!
+    * @brief Transform the bytes coming from register in readable information
+    * @param raw_gyro Raw data readed by the sensor
+    * @return returns the rotation in degrees °
+    */
+    int16_t GyroCalculator(int16_t raw_gyro);
+
     void CheckStatus();
     void GyroCheck();
     void AccellCheck();
-   
-    /*!
-     * @brief Converts 2's complement binary into decimal
-     * @param twocomplement binary 2's complement value to convert
-     * @return Returns converted value in decimal
-     */
-    int TwosComplementToDecimal(int16_t twoscomplement);  
   
   public:
 
@@ -121,11 +119,7 @@ class MPU_6050
     float AccelZ();
 
     /*!
-     * @brief Configure the Gyroscope range. 
-     * 0 = 250 rads/s;
-     * 1 = 500 rads/s;
-     * 2 = 1000 rads/s;
-     * 3 = 2000 rads/s;
+     * @brief Configure the Gyroscope range. (0 = 250 rads/s | 1 = 500 rads/s | 2 = 1000 rads/s | 3 = 2000 rads/s)
      * @param gyro_range The Gyroscope sensitivity in a scale 0-3
      */
     void ConfigGyroRange(int gyro_range);
