@@ -96,7 +96,7 @@ int16_t MPU_6050::getData(uint16_t reg_address, uint8_t num_bytes){
   Wire.beginTransmission(MPU_SENSOR_I2C_ADDRESS);
   Wire.write(reg_address);
   Wire.endTransmission(false);
-  Wire.requestFrom(MPU_SENSOR_I2C_ADDRESS, num_bytes, true);
+  Wire.requestFrom(MPU, num_bytes, true);
   int16_t value = Wire.read() << 8 | Wire.read();
   return value;
 }
@@ -108,24 +108,6 @@ void MPU_6050::configGyro(int gyro_range){
 	Wire.write(GYRO_CONFIG);
 	Wire.write(GYRO_FS_SEL_CFG);
 	Wire.endTransmission();
-
-  if(default_led_pin != NULL) digitalWrite(default_led_pin, HIGH);
-  else Serial.println("DON'T MOVE MPU. CALIBRATING GYROSCOPE.");
-
-  int16_t xdata = getData(GYRO_XOUT_H, 2);
-  int16_t ydata = getData(GYRO_YOUT_H, 2);
-  int16_t zdata = getData(GYRO_ZOUT_H, 2);
-
-  float x = ((float)xdata) / 65.5;
-  float y = ((float)ydata) / 65.5;
-  float z = ((float)zdata) / 65.5;
-
-  gyroXoffset = x / 3000;
-  gyroYoffset = y / 3000;
-  gyroZoffset = z / 3000;
-
-  if(default_led_pin != NULL) digitalWrite(default_led_pin, LOW);
-  else Serial.println("CALIBRATION COMPLETE.");
 
 }
 
@@ -141,54 +123,6 @@ float MPU_6050::accelCalculator(int16_t raw_accel){
 }
 
 float MPU_6050::gyroCalculator(int choice){
-
-  int16_t rawGyroX = getData(GYRO_XOUT_H, 2);
-  int16_t rawGyroY = getData(GYRO_YOUT_H, 2);
-  int16_t rawGyroZ = getData(GYRO_ZOUT_H, 2);
-
-  float rawXacc = getData(ACCEL_XOUT_H, 2);
-  float rawYacc = getData(ACCEL_YOUT_H, 2);
-  float rawZacc = getData(ACCEL_ZOUT_H, 2);
-
-  float accX = ((float)rawXacc) / 16384.0;
-  float accY = ((float)rawYacc) / 16384.0;
-  float accZ = ((float)rawZacc) / 16384.0;
-
-  float angleAccX = atan2(accY, sqrt(accZ * accZ + accX * accX)) * 360 / 2.0 / PI;
-  float angleAccY = atan2(accX, sqrt(accZ * accZ + accY * accY)) * 360 / -2.0 / PI;
-
-  float gyroX = ((float)rawGyroX) / 65.5;
-  float gyroY = ((float)rawGyroY) / 65.5;
-  float gyroZ = ((float)rawGyroZ) / 65.5;
-
-  gyroX -= gyroXoffset;
-  gyroY -= gyroYoffset;
-  gyroZ -= gyroZoffset;
-
-  float interval = (millis() - preInterval) * 0.001;
-
-  angleGyroX += gyroX * interval;
-  angleGyroY += gyroY * interval;
-  angleGyroZ += gyroZ * interval;
-
-  float angleX = (gyroCoef * (angleX + gyroX * interval)) + (accCoef * angleAccX);
-  float angleY = (gyroCoef * (angleY + gyroY * interval)) + (accCoef * angleAccY);
-  float angleZ = angleGyroZ;
-  
-  preInterval = millis();
-
-  switch(choice){
-    case 1:
-      return angleX;
-    
-    case 2:
-      return angleY;
-
-    case 3: 
-      return angleZ;
-  }
-
-  return 0;
 
 }
 

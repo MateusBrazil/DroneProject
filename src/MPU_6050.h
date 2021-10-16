@@ -48,6 +48,8 @@ class MPU_6050
 
   private:
 
+    const uint16_t MPU = MPU_SENSOR_I2C_ADDRESS;
+
     /*!
     * @brief Check if MPU is working well.
     * @param i2c_sda SDA PIN number.
@@ -83,10 +85,9 @@ class MPU_6050
 
     /*!
     * @brief Transform the bytes coming from register in readable information
-    * @param choince index of angle (1 - X, 2 - Y, 3 - Z)
     * @return returns the rotation in degrees °
     */
-    float gyroCalculator(int choice);
+    float gyroCalculator();
 
   public:
 
