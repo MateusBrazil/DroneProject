@@ -90,45 +90,56 @@ float MPU_6050::AccelCalculator(int16_t raw_accel){
 
 }
 
-float MPU_6050::GyroCalculator(int16_t raw_gyro, int axis)
+float MPU_6050::GyroCalculator(int axis)
 {
-
-  float no_gyro = 0;
-    //.007633f
+  float interval = 0;
   float rangePerUnit = .007633f;
-
-  no_gyro = raw_gyro * rangePerUnit;
-
-  float gyro_x_value = no_gyro - gyro_offset_x;
-  float gyro_y_value = no_gyro - gyro_offset_y;
-  float gyro_z_value = no_gyro - gyro_offset_z;
-
 
   switch (axis){
     case 0:
-        if (gyro_x_value > 1 | gyro_x_value <1)
-        {
-            gyro_angle_x += (gyro_x_value * 57.2958f) / 360;
-        }
+        float no_gyro_x = 0;
+        float tini = millis();
+        int16_t raw_gyro_x = GetData(GYRO_XOUT_H, 2);
+        float tfin = millis();
+        float no_gyro_x = raw_gyro_x * rangePerUnit;
+        float gyro_x_value = no_gyro_x - gyro_offset_x;
+        interval = (tfin-tini) / 1000;     
+        float dangle = gyro_x_value * interval;
+        if (gyro_x_value > 0.6 | gyro_x_value < -0.6) gyro_angle_x += dangle * 57.2958f;
+
         return gyro_angle_x;
+
     case 1:
-        if (gyro_y_value > 1 | gyro_y_value <1)
-        {
-            gyro_angle_y += (gyro_y_value * 57.2958f) / 360;
-        }
+
+        float no_gyro_y = 0;
+        float tini = millis();
+        int16_t raw_gyro_y = GetData(GYRO_YOUT_H, 2);
+        float tfin = millis();
+        interval = (tfin-tini) / 1000;
+        float no_gyro_y = raw_gyro_y * rangePerUnit;
+        float gyro_y_value = no_gyro_y - gyro_offset_y;
+        float dangle = gyro_y_value * interval;
+        if (gyro_y_value > 0.6 | gyro_y_value < -0.6) gyro_angle_y += dangle * 57.2958f;
+
         return gyro_angle_y;
+
     case 2:
-        if (gyro_z_value > 1 | gyro_z_value < 1)
-        {
-            gyro_angle_z += (gyro_z_value * 57.2958f) / 360;
-        }
+
+        float no_gyro_z = 0;
+        float tini = millis();
+        int16_t raw_gyro_z = GetData(GYRO_ZOUT_H, 2);
+        float tfin = millis();
+        interval = (tfin-tini) / 1000;
+        float no_gyro_z = raw_gyro_z * rangePerUnit;
+        float gyro_z_value = no_gyro_z - gyro_offset_z;
+        float dangle = gyro_z_value * interval;
+        if (gyro_z_value > 0.6 | gyro_z_value < -0.6) gyro_angle_z += dangle * 57.2958f;
+        
         return gyro_angle_z;
   
     default:
         return 0;
-  }
-
-
+    }
 
   }
 
@@ -166,29 +177,8 @@ void MPU_6050::begin(){
 
   gyroOffSet();
   
-}    
+}       
 
-   
-   
-float MPU_6050::GyroX(){
-
-  int16_t result = GetData(GYRO_XOUT_H, 2);
-  return (GyroCalculator(result)); ;
-
-}
-
-float MPU_6050::GyroY(){
- 
-  int16_t result = GetData(GYRO_YOUT_H, 2);
-  return (GyroCalculator(result);
- 
-}   
-
-float MPU_6050::GyroZ(){        
-
-  int16_t result = GetData(GYRO_ZOUT_H, 2);
-  return (GyroCalculator(result);
-}
 double MPU_6050::Temp(){
 
   double result;

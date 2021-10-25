@@ -4,6 +4,7 @@
 #include "arduino.h"
 #include <stdint.h>
 #include <Wire.h>
+#include <time.h>
 
 //Registers
 #define MPU_SENSOR_I2C_ADDRESS 0x68     //Address of MPU6050 in I2C bus
@@ -87,19 +88,19 @@ class MPU_6050
      * @brief Gets the X value of Gyroscope
      * @return Returns X value in radians    
      */      
-    float GyroX();
+    float GyroX() return GyroCalculator(0);
 
      /*!
      * @brief Gets the Y value of Gyroscope
      * @return Returns Y value in radians    
      */  
-    float GyroY();
+    float GyroY() return GyroCalculator(1);
     
      /*!
      * @brief Gets the Z value of Gyroscope
      * @return Returns Z value in radians    
      */  
-    float GyroZ();
+    float GyroZ() return GyroCalculator(2);
 
     /*!
      * @brief Gets the temperature over I2C from the MPU6050 
