@@ -64,11 +64,10 @@ class MPU_6050
 
     /*!
      * @brief Transform the bytes coming from register in readable information like °;
-     * @param raw_gyro Raw data readed by the sensor
      * @param axis Axis that function should return
      * @return returns the rotation in degrees
      */
-    float GyroCalculator(int16_t raw_gyro, int axis);
+    float GyroCalculator(int axis);
 
     void gyroOffSet();
 
