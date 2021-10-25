@@ -64,8 +64,8 @@ class MPU_6050
 
     /*!
      * @brief Transform the bytes coming from register in readable information like °;
-     * @param axis Axis that function should return
-     * @return returns the rotation in degrees
+     * @param axis Axis that function should return;
+     * @return returns the rotation in degrees.
      */
     float GyroCalculator(int axis);
 
